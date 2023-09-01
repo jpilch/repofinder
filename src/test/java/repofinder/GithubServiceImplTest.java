@@ -41,15 +41,15 @@ public class GithubServiceImplTest {
 
         given(props.getReposPerPage()).willReturn(100);
         given(props.getBranchesPerPage()).willReturn(100);
-        given(githubClient.getForObject(
-            mockReposUrl,
-            Object.class))
-            .willReturn(Optional.of(List.of()));
+        given(githubClient.getForObject(mockReposUrl, GithubRepository[].class))
+            .willReturn(new GithubRepository[] {mockRepo});
+        given(githubClient.getForObject(mockBranchesUrl, GithubRepository.Branch[].class))
+            .willReturn(new GithubRepository.Branch[] {});
 
         List<GithubRepository> result = githubService.findAllNonForkReposFor("john");
 
-        assertEquals(result.size(), 0);
+        assertEquals(result.size(), 1);
         verify(githubClient).getForObject(mockReposUrl, GithubRepository[].class);
-        verify(githubClient).getForObject(mockReposUrl, GithubRepository.Branch[].class);
+        verify(githubClient).getForObject(mockBranchesUrl, GithubRepository.Branch[].class);
     }
 }
