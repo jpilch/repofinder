@@ -38,12 +38,14 @@ public class GithubServiceImpl implements GithubService {
             repository.setBranches(allBranches);
         };
 
-        allRepositories
+        List<GithubRepository> allNonForkRepositories = allRepositories
             .stream()
             .filter(GithubRepository::isNotAFork)
-            .forEach(fetchRepositoryBranches);
+            .toList();
 
-        return allRepositories;
+        allNonForkRepositories.forEach(fetchRepositoryBranches);
+
+        return allNonForkRepositories;
     }
 
     private <T> List<T> findAllEntities(
