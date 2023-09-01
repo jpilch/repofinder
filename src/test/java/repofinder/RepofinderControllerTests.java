@@ -87,7 +87,7 @@ public class RepofinderControllerTests {
             .andExpect(jsonPath("$[0].ownerLogin").value("john"))
             .andExpect(jsonPath("$[0].name").value("repofinder"))
             .andExpect(jsonPath("$[0].branches[0].name").value("master"))
-            .andExpect(jsonPath("$[0].branches[0].commitSha").value("00f99f711380bd6c"));
+            .andExpect(jsonPath("$[0].branches[0].lastCommitSha").value("00f99f711380bd6c"));
 
         verify(githubService).findAllNonForkReposFor("john");
     }
