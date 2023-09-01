@@ -22,7 +22,8 @@ public class GithubServiceImpl implements GithubService {
         this.props = props;
     }
 
-    public List<GithubRepository> findAllReposFor(String username) {
+    @Override
+    public List<GithubRepository> findAllNonForkReposFor(String username) {
         List<GithubRepository> allRepositories = findAllRepos(username);
 
         Consumer<GithubRepository> fetchRepositoryBranches = repository -> {
