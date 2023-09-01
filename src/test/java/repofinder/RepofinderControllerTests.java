@@ -1,6 +1,5 @@
 package repofinder;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,7 +29,6 @@ public class RepofinderControllerTests {
     GithubService githubService;
 
     @Test
-    @Disabled
     public void listReposFor_NonExistentUser() throws Exception {
         String mockErrorResponseBody = "{\"message\": \"Not found\"}";
         String mockExceptionMessage = "User not found";
