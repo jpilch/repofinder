@@ -13,6 +13,7 @@ import repofinder.controller.RepofinderController;
 import repofinder.model.GithubRepository;
 import repofinder.service.GithubService;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.mockito.BDDMockito.*;
@@ -31,11 +32,14 @@ public class RepofinderControllerTests {
     @Test
     @Disabled
     public void listReposFor_NonExistentUser() throws Exception {
+        String mockErrorResponseBody = "{\"message\": \"Not found\"}";
         String mockExceptionMessage = "User not found";
         HttpStatusCode mockExceptionStatus = HttpStatusCode.valueOf(404);
         HttpClientErrorException userNotFoundException = new HttpClientErrorException(
             mockExceptionStatus,
-            mockExceptionMessage
+            mockExceptionMessage,
+            mockErrorResponseBody.getBytes(),
+            StandardCharsets.UTF_8
         );
 
         given(githubService.findAllReposFor(any(String.class)))
@@ -45,7 +49,7 @@ public class RepofinderControllerTests {
             .accept("application/json"))
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.Message")
-                .value(anyString()))
+                .value("Not found"))
             .andExpect(jsonPath("$.status").value(404));
 
         verify(githubService).findAllReposFor(any(String.class));
