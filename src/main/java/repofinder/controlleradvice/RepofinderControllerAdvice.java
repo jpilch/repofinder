@@ -1,5 +1,6 @@
 package repofinder.controlleradvice;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,10 @@ public class RepofinderControllerAdvice {
         HttpClientErrorException exception
     ) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-
-        String errorResponseBody = exception.getResponseBodyAsString();
+        JsonNode errorResponseBody = objectMapper.readTree(exception.getResponseBodyAsString());
+        String errorResponseMessage = errorResponseBody.get("message").textValue();
         StatusWithMessage responseBody = new StatusWithMessage(
-            objectMapper.readTree(errorResponseBody),
+            errorResponseMessage,
             exception.getStatusCode().value());
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
