@@ -15,7 +15,7 @@ public class RepofinderController {
     }
 
     @GetMapping(value = "/{username}", produces = "application/json")
-    public List<GithubRepository> listReposFor(@PathVariable String username) {
+    public List<GithubRepository> findAllReposFor(@PathVariable String username) {
         return githubService.findAllReposFor(username);
     }
 }
