@@ -28,27 +28,28 @@ public class RepofinderControllerTests {
     @MockBean
     GithubService githubService;
 
-//    @Test
-//    public void listReposFor_NonExistentUser() throws Exception {
-//        String mockExceptionMessage = "User not found";
-//        HttpStatusCode mockExceptionStatus = HttpStatusCode.valueOf(404);
-//        HttpClientErrorException userNotFoundException = new HttpClientErrorException(
-//            mockExceptionStatus,
-//            mockExceptionMessage
-//        );
-//
-//        given(githubService.findAllReposFor(any(String.class)))
-//            .willThrow(userNotFoundException);
-//
-//        mockMvc.perform(get("/bob")
-//            .accept("application/json"))
-//            .andExpect(status().isNotFound())
-//            .andExpect(jsonPath("$.Message")
-//                .value(anyMap()))
-//            .andExpect(jsonPath("$.status").value(404));
-//
-//        verify(githubService).findAllReposFor(any(String.class));
-//    }
+    @Test
+    @Disabled
+    public void listReposFor_NonExistentUser() throws Exception {
+        String mockExceptionMessage = "User not found";
+        HttpStatusCode mockExceptionStatus = HttpStatusCode.valueOf(404);
+        HttpClientErrorException userNotFoundException = new HttpClientErrorException(
+            mockExceptionStatus,
+            mockExceptionMessage
+        );
+
+        given(githubService.findAllReposFor(any(String.class)))
+            .willThrow(userNotFoundException);
+
+        mockMvc.perform(get("/bob")
+            .accept("application/json"))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.Message")
+                .value(anyString()))
+            .andExpect(jsonPath("$.status").value(404));
+
+        verify(githubService).findAllReposFor(any(String.class));
+    }
 
     @Test
     public void listReposFor_UnsupportedContentType() throws Exception {
