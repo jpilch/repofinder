@@ -23,18 +23,10 @@ public class GithubServiceImpl implements GithubService {
     }
 
     public List<GithubRepository> findAllReposFor(String username) {
-        List<GithubRepository> allRepositories = findAllEntities(
-            (page) -> getRepositoriesUrl(username, page),
-            (url) -> githubClient.getForObject(url, GithubRepository[].class),
-            props.getReposPerPage()
-        );
+        List<GithubRepository> allRepositories = findAllRepos(username);
 
         Consumer<GithubRepository> fetchRepositoryBranches = repository -> {
-            List<GithubRepository.Branch> allBranches = findAllEntities(
-                (page) -> getBranchesUrl(username, repository, page),
-                (url) -> githubClient.getForObject(url, GithubRepository.Branch[].class),
-                props.getBranchesPerPage()
-            );
+            List<GithubRepository.Branch> allBranches = findAllBranches(repository);
             repository.setBranches(allBranches);
         };
 
@@ -48,24 +40,39 @@ public class GithubServiceImpl implements GithubService {
         return allNonForkRepositories;
     }
 
-    private <T> List<T> findAllEntities(
-        Function<Integer, String> urlGetter,
-        Function<String, T[]> entityFetcher,
-        int entitiesPerPage
-    ) {
+    private <T> List<T> findAllEntities(Function<Integer, T[]> entityFetcher, int entitiesPerPage) {
         List<T> allEntities = new ArrayList<>();
 
         boolean hasNextPage = true;
         int currentPage = 1;
         while (hasNextPage) {
-            String url = urlGetter.apply(currentPage);
-            T[] returnedEntities = entityFetcher.apply(url);
+            T[] returnedEntities = entityFetcher.apply(currentPage);
             allEntities.addAll(Arrays.asList(returnedEntities));
             hasNextPage = returnedEntities.length == entitiesPerPage;
             currentPage++;
         }
 
         return allEntities;
+    }
+
+    public List<GithubRepository> findAllRepos(String username) {
+        return findAllEntities(
+            (page) -> {
+                String url = getRepositoriesUrl(username, page);
+                return githubClient.getForObject(url, GithubRepository[].class);
+            },
+            props.getReposPerPage()
+        );
+    }
+
+    public List<GithubRepository.Branch> findAllBranches(GithubRepository repository) {
+        return findAllEntities(
+            (page) -> {
+                String url = getBranchesUrl(repository, page);
+                return githubClient.getForObject(url, GithubRepository.Branch[].class);
+            },
+            props.getBranchesPerPage()
+        );
     }
 
     private String getRepositoriesUrl(String username, int currentPage) {
@@ -81,7 +88,7 @@ public class GithubServiceImpl implements GithubService {
             .toUriString();
     }
 
-    private String getBranchesUrl(String username, GithubRepository repository, int currentPage) {
+    private String getBranchesUrl(GithubRepository repository, int currentPage) {
         return UriComponentsBuilder
             .newInstance()
             .path("/repos")
