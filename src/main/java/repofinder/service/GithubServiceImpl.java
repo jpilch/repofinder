@@ -3,7 +3,7 @@ package repofinder.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import repofinder.configurationproperties.GithubServiceConfigurationProperties;
+import repofinder.configprops.GithubServiceConfigProps;
 import repofinder.model.GithubRepository;
 
 import java.util.ArrayList;
@@ -14,10 +14,10 @@ import java.util.function.Function;
 
 @Service
 public class GithubServiceImpl implements GithubService {
-    private final GithubServiceConfigurationProperties props;
+    private final GithubServiceConfigProps props;
     private final RestTemplate githubClient;
 
-    public GithubServiceImpl(RestTemplate githubClient, GithubServiceConfigurationProperties props) {
+    public GithubServiceImpl(RestTemplate githubClient, GithubServiceConfigProps props) {
         this.githubClient = githubClient;
         this.props = props;
     }

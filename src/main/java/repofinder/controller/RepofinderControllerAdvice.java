@@ -1,4 +1,4 @@
-package repofinder.controlleradvice;
+package repofinder.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,7 +8,7 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
-import repofinder.response.StatusWithMessage;
+import repofinder.model.StatusWithMessage;
 
 @ControllerAdvice
 public class RepofinderControllerAdvice {

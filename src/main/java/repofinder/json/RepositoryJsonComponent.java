@@ -1,4 +1,4 @@
-package repofinder.jsoncomponents;
+package repofinder.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -21,7 +21,7 @@ public class RepositoryJsonComponent {
             String ownerLogin = tree.get("owner").get("login").textValue();
             String name = tree.get("name").textValue();
             boolean fork = tree.get("fork").asBoolean();
-            return new GithubRepository(ownerLogin, name, fork, List.of());
+            return new GithubRepository(ownerLogin, name, List.of(), fork);
         }
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
-import repofinder.configurationproperties.GithubClientConfigurationProperties;
+import repofinder.configprops.GithubClientConfigProps;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
@@ -21,7 +21,7 @@ public class RepofinderApplication {
 	@Profile("!test")
 	public RestTemplate githubClient(
 		RestTemplateBuilder restTemplateBuilder,
-		GithubClientConfigurationProperties props
+		GithubClientConfigProps props
 	) {
 		return restTemplateBuilder
 			.defaultHeader("Accept", "application/vnd.github+json")

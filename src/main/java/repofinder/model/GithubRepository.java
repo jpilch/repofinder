@@ -11,9 +11,10 @@ import java.util.List;
 public class GithubRepository {
     private String ownerLogin;
     private String name;
+    private List<Branch> branches;
+
     @JsonIgnore
     private boolean fork;
-    private List<Branch> branches;
 
     @JsonIgnore
     public boolean isNotAFork() {
@@ -24,6 +25,6 @@ public class GithubRepository {
     @AllArgsConstructor
     public static class Branch {
         private String name;
-        private String commitSha;
+        private String lastCommitSha;
     }
 }

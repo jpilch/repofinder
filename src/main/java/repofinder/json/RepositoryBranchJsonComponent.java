@@ -1,4 +1,4 @@
-package repofinder.jsoncomponents;
+package repofinder.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;

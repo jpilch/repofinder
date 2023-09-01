@@ -1,4 +1,4 @@
-package repofinder.configurationproperties;
+package repofinder.configprops;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @ToString
 @ConfigurationProperties("application.github-service.config")
-public class GithubServiceConfigurationProperties {
+public class GithubServiceConfigProps {
     private int reposPerPage;
     private int branchesPerPage;
 }

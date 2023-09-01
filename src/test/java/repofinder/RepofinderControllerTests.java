@@ -75,8 +75,8 @@ public class RepofinderControllerTests {
         GithubRepository mockRepository = new GithubRepository(
             "john",
             "repofinder",
-            false,
-            List.of(mockBranch));
+            List.of(mockBranch),
+            false);
 
         given(githubService.findAllReposFor("john"))
             .willReturn(List.of(mockRepository));
