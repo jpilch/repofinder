@@ -12,7 +12,7 @@ public class GithubRepository {
     private String ownerLogin;
     private String name;
     @JsonIgnore
-    public boolean fork;
+    private boolean fork;
     private List<Branch> branches;
 
     @JsonIgnore
