@@ -13,7 +13,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GithubServiceImplTest {
+public class GithubServiceImplTests {
 
     private GithubServiceConfigProps props;
     private RestTemplate githubClient;
