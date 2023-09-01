@@ -40,7 +40,7 @@ public class RepofinderControllerTests {
             StandardCharsets.UTF_8
         );
 
-        given(githubService.findAllReposFor(any(String.class)))
+        given(githubService.findAllNonForkReposFor(any(String.class)))
             .willThrow(userNotFoundException);
 
         mockMvc.perform(get("/bob")
@@ -50,12 +50,12 @@ public class RepofinderControllerTests {
                 .value("Not found"))
             .andExpect(jsonPath("$.status").value(404));
 
-        verify(githubService).findAllReposFor(any(String.class));
+        verify(githubService).findAllNonForkReposFor(any(String.class));
     }
 
     @Test
     public void listReposFor_UnsupportedContentType() throws Exception {
-        given(githubService.findAllReposFor(any(String.class)))
+        given(githubService.findAllNonForkReposFor(any(String.class)))
             .willReturn(List.of());
 
         mockMvc.perform(get("/bob")
@@ -66,7 +66,7 @@ public class RepofinderControllerTests {
             .andExpect(jsonPath("$.status").value(406));
 
         verify(githubService, times(0))
-            .findAllReposFor(any(String.class));
+            .findAllNonForkReposFor(any(String.class));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class RepofinderControllerTests {
             List.of(mockBranch),
             false);
 
-        given(githubService.findAllReposFor("john"))
+        given(githubService.findAllNonForkReposFor("john"))
             .willReturn(List.of(mockRepository));
 
         mockMvc.perform(get("/john")
@@ -89,7 +89,7 @@ public class RepofinderControllerTests {
             .andExpect(jsonPath("$[0].branches[0].name").value("master"))
             .andExpect(jsonPath("$[0].branches[0].commitSha").value("00f99f711380bd6c"));
 
-        verify(githubService).findAllReposFor("john");
+        verify(githubService).findAllNonForkReposFor("john");
     }
 
 }
