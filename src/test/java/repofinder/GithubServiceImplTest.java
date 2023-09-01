@@ -2,7 +2,6 @@ package repofinder;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import repofinder.configprops.GithubServiceConfigProps;
 import repofinder.model.GithubRepository;
@@ -10,7 +9,6 @@ import repofinder.service.GithubService;
 import repofinder.service.GithubServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,5 +49,27 @@ public class GithubServiceImplTest {
         assertEquals(result.size(), 1);
         verify(githubClient).getForObject(mockReposUrl, GithubRepository[].class);
         verify(githubClient).getForObject(mockBranchesUrl, GithubRepository.Branch[].class);
+    }
+
+    @Test
+    public void findAllNonForkReposFor_FiltersForkRepos() throws Exception {
+        GithubRepository mockRepo = new GithubRepository(
+            "john",
+            "repofinder",
+            List.of(),
+            true);
+        String mockReposUrl = "/users/john/repos?type=all&page=1&per_page=100";
+        String mockBranchesUrl = "/repos/john/repofinder/branches?page=1&per_page=100";
+
+        given(props.getReposPerPage()).willReturn(100);
+        given(props.getBranchesPerPage()).willReturn(100);
+        given(githubClient.getForObject(mockReposUrl, GithubRepository[].class))
+            .willReturn(new GithubRepository[] {mockRepo});
+        given(githubClient.getForObject(mockBranchesUrl, GithubRepository.Branch[].class))
+            .willReturn(new GithubRepository.Branch[] {});
+
+        List<GithubRepository> result = githubService.findAllNonForkReposFor("john");
+
+        assertEquals(result.size(), 0);
     }
 }
