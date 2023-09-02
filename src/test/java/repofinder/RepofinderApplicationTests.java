@@ -42,8 +42,8 @@ class RepofinderApplicationTests {
 
 	@Test
 	void cachesResults() throws Exception {
-		GithubRepository repo = new GithubRepository("jpilch", "repofinder", List.of(), false);
-		given(githubService.findAllNonForkReposFor("john")).willReturn(List.of());
+		GithubRepository repo = new GithubRepository("john", "repofinder", List.of(), false);
+		given(githubService.findAllNonForkReposFor("john")).willReturn(List.of(repo));
 
 		String serializedRepo1 = testRestTemplate.getForObject("/john", String.class);
 		String serializedRepo2 = testRestTemplate.getForObject("/john", String.class);
