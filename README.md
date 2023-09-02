@@ -15,7 +15,7 @@ Additionally, it handles error responses, returning 404 for non-existing users a
 
 ## Local Setup
 
-To set up RepoFinder locally, follow these steps:
+To set up Repofinder locally, follow these steps:
 
 ### Prerequisites
 
