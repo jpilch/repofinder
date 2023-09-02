@@ -132,7 +132,7 @@ Sample response:
 - **Java**: The programming language
 - **Maven**: Dependency management tool
 - **Spring Boot**: Framework for implementing the required API functionality
-- **Redis**: In memory caching for improved performance and reducing the amount of processed requests to GitHub's API
+- **Redis**: In memory caching for improved performance and reducing the amount of requests to GitHub's API
 - **Docker**: Containerization for easy development and reproducible environment
 
 
