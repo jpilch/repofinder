@@ -15,16 +15,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GithubServiceImplTests {
 
-    private GithubServiceConfigProps props;
     private RestTemplate githubClient;
 
     private GithubService githubService;
 
     @BeforeEach
     public void setUp() {
-        props = mock(GithubServiceConfigProps.class);
         githubClient = mock(RestTemplate.class);
-        this.githubService = new GithubServiceImpl(githubClient, props);
+        this.githubService = new GithubServiceImpl(githubClient);
     }
 
     @Test
@@ -37,8 +35,6 @@ public class GithubServiceImplTests {
         String mockReposUrl = "/users/john/repos?type=all&page=1&per_page=100";
         String mockBranchesUrl = "/repos/john/repofinder/branches?page=1&per_page=100";
 
-        given(props.getReposPerPage()).willReturn(100);
-        given(props.getBranchesPerPage()).willReturn(100);
         given(githubClient.getForObject(mockReposUrl, GithubRepository[].class))
             .willReturn(new GithubRepository[] {mockRepo});
         given(githubClient.getForObject(mockBranchesUrl, GithubRepository.Branch[].class))
@@ -60,8 +56,6 @@ public class GithubServiceImplTests {
         String mockReposUrl = "/users/john/repos?type=all&page=1&per_page=100";
         String mockBranchesUrl = "/repos/john/repofinder/branches?page=1&per_page=100";
 
-        given(props.getReposPerPage()).willReturn(100);
-        given(props.getBranchesPerPage()).willReturn(100);
         given(githubClient.getForObject(mockReposUrl, GithubRepository[].class))
             .willReturn(new GithubRepository[] {mockRepo});
         given(githubClient.getForObject(mockBranchesUrl, GithubRepository.Branch[].class))

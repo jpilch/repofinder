@@ -3,7 +3,6 @@ package repofinder.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import repofinder.configprops.GithubServiceConfigProps;
 import repofinder.model.GithubRepository;
 
 import java.util.ArrayList;
@@ -14,12 +13,10 @@ import java.util.function.Function;
 
 @Service
 public class GithubServiceImpl implements GithubService {
-    private final GithubServiceConfigProps props;
     private final RestTemplate githubClient;
 
-    public GithubServiceImpl(RestTemplate githubClient, GithubServiceConfigProps props) {
+    public GithubServiceImpl(RestTemplate githubClient) {
         this.githubClient = githubClient;
-        this.props = props;
     }
 
     @Override
@@ -41,7 +38,7 @@ public class GithubServiceImpl implements GithubService {
         return allNonForkRepositories;
     }
 
-    private <T> List<T> findAllEntities(Function<Integer, T[]> entityFetcher, int entitiesPerPage) {
+    private <T> List<T> findAllEntities(Function<Integer, T[]> entityFetcher) {
         List<T> allEntities = new ArrayList<>();
 
         boolean hasNextPage = true;
@@ -49,7 +46,7 @@ public class GithubServiceImpl implements GithubService {
         while (hasNextPage) {
             T[] returnedEntities = entityFetcher.apply(currentPage);
             allEntities.addAll(Arrays.asList(returnedEntities));
-            hasNextPage = returnedEntities.length == entitiesPerPage;
+            hasNextPage = returnedEntities.length == 100;
             currentPage++;
         }
 
@@ -61,8 +58,7 @@ public class GithubServiceImpl implements GithubService {
             (page) -> {
                 String url = getRepositoriesUrl(username, page);
                 return githubClient.getForObject(url, GithubRepository[].class);
-            },
-            props.getReposPerPage()
+            }
         );
     }
 
@@ -71,8 +67,7 @@ public class GithubServiceImpl implements GithubService {
             (page) -> {
                 String url = getBranchesUrl(repository, page);
                 return githubClient.getForObject(url, GithubRepository.Branch[].class);
-            },
-            props.getBranchesPerPage()
+            }
         );
     }
 
@@ -84,7 +79,7 @@ public class GithubServiceImpl implements GithubService {
             .path("/repos")
             .queryParam("type", "all")
             .queryParam("page", currentPage)
-            .queryParam("per_page", props.getReposPerPage())
+            .queryParam("per_page", 100)
             .buildAndExpand(username)
             .toUriString();
     }
@@ -97,7 +92,7 @@ public class GithubServiceImpl implements GithubService {
             .path("/{repositoryName}")
             .path("/branches")
             .queryParam("page", currentPage)
-            .queryParam("per_page", props.getReposPerPage())
+            .queryParam("per_page", 100)
             .buildAndExpand(repository.getOwnerLogin(), repository.getName())
             .toUriString();
     }
