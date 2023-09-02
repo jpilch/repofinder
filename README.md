@@ -21,7 +21,7 @@ To set up Repofinder locally, follow these steps:
 
   The only prerequisite is having **docker compose** installed on your system.
   
-  To check if you have it installed you can run `docker compose verision` (the following output shows which version I used):
+  To check if you have it installed you can run `docker compose version` (the following output shows which version I used):
   ```shell
   ➜  repofinder git:(master) docker compose version  
   Docker Compose version v2.20.2
@@ -132,7 +132,7 @@ Sample response:
 - **Java**: The programming language
 - **Maven**: Dependency management tool
 - **Spring Boot**: Framework for implementing the required API functionality
-- **Redis**: In memory caching for improved performance and reducing the amount of requests to GitHub's API
+- **Redis**: In memory caching for improved performance and reducing the amount of requests to GitHub
 - **Docker**: Containerization for easy development and reproducible environment
 
 
