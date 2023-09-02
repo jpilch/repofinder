@@ -70,7 +70,13 @@ To set up Repofinder locally, follow these steps:
    ./mvnw clean install
    ```
 
-3. Run the application.
+3. Build the app image.
+
+   ```shell
+   docker compose build
+   ```
+
+4. Run the application.
 
     The easiest way to get this API up and running is by using docker compose:
     
