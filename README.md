@@ -58,12 +58,19 @@ To set up Repofinder locally, follow these steps:
 
 ### Building and Running
 
-1. Build the application using Maven wrapper.
+1. Start up the cache service required for testing and running the API.
+
+   ```shell
+   docker compose up -d cache
+   ```
+
+2. Build the application using Maven wrapper.
 
    ```shell
    ./mvnw clean install
    ```
-2. Run the application.
+
+3. Run the application.
 
     The easiest way to get this API up and running is by using docker compose:
     
@@ -71,10 +78,9 @@ To set up Repofinder locally, follow these steps:
     docker compose up -d
     ```
     
-    Or alternatively you can use maven spring boot plugin, but you have to make sure the cache service is available for your app:
+    Or alternatively you can use maven spring boot plugin:
     
     ```
-    docker compose up -d cache
     ./mvnw spring-boot:run
     ```
 
