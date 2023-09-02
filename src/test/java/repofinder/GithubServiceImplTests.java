@@ -3,7 +3,6 @@ package repofinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
-import repofinder.configprops.GithubServiceConfigProps;
 import repofinder.model.GithubRepository;
 import repofinder.service.GithubService;
 import repofinder.service.GithubServiceImpl;
