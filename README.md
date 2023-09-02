@@ -19,13 +19,19 @@ To set up Repofinder locally, follow these steps:
 
 ### Prerequisites
 
-  The only prerequisite is having **docker compose** installed on your system.
+  - **docker compose v2.20.2**
   
-  To check if you have it installed you can run `docker compose version` (the following output shows which version I used):
-  ```shell
-  ➜  repofinder git:(master) docker compose version  
-  Docker Compose version v2.20.2
-  ```
+    To check if you have it installed you can run `docker compose version`, if not installed take a look at the docs on how to install it.
+
+  - **java 17.0.7**
+
+    For me, the easiest way to install java is by using sdkman. With sdkman you can run the following command to install the jdk that was used during the development of this project:
+
+    ```
+    sdk install java 17.0.7-amzn
+    ```
+
+  
 
 ### Configuration
 
