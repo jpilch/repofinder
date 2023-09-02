@@ -49,4 +49,27 @@ public class GithubRepositoryJsonTests {
 
         assertEquals(serializedRepo, expectedString);
     }
+
+    @Test
+    public void deserializeBranch() throws Exception {
+        String jsonString = "{\"name\":\"master\",\"commit\":{\"sha\":\"c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc\"}}";
+
+        GithubRepository.Branch branch = mapper.readValue(jsonString, GithubRepository.Branch.class);
+
+        assertEquals(branch.getName(), "master");
+        assertEquals(branch.getLastCommitSha(), "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc");
+    }
+
+    @Test
+    public void serializeBranch() throws Exception {
+        GithubRepository.Branch branch = new GithubRepository.Branch(
+            "master",
+            "c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc"
+        );
+
+        String jsonString = mapper.writeValueAsString(branch);
+        String expectedString = "{\"name\":\"master\",\"lastCommitSha\":\"c5b97d5ae6c19d5c5df71a34c7fbeeda2479ccbc\"}";
+
+        assertEquals(jsonString, expectedString);
+    }
 }
