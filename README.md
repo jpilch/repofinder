@@ -19,9 +19,9 @@ To set up Repofinder locally, follow these steps:
 
 ### Prerequisites
 
-  The only prerequesite is having **docker compose** installed on your system.
+  The only prerequisite is having **docker compose** installed on your system.
   
-  To check if you have it installed you can run `docker compose verision` (the following output shows which version I used).
+  To check if you have it installed you can run `docker compose verision` (the following output shows which version I used):
   ```shell
   ➜  repofinder git:(master) docker compose version  
   Docker Compose version v2.20.2
@@ -52,7 +52,7 @@ To set up Repofinder locally, follow these steps:
       config:
         entry-ttl: 600
    ```
-    where `<YOUR-TOKEN>` is your personal access token for the GitHub's API.
+   Where `<YOUR-TOKEN>` is your personal access token for the GitHub's API.
 
    You can also adjust the `app.config.entry-ttl` to change cache entry ttl, in the above example it's equal to 10 minutes (60 -> 1 minute).
 
@@ -65,13 +65,13 @@ To set up Repofinder locally, follow these steps:
    ```
 2. Run the application.
 
-    The easiest way to get this API up and running is by using docker compose.
+    The easiest way to get this API up and running is by using docker compose:
     
     ```
     docker compose up -d
     ```
     
-    Or alternatively you can use maven spring boot plugin, but you have to make sure the cache service is avaiable for you app.
+    Or alternatively you can use maven spring boot plugin, but you have to make sure the cache service is available for your app:
     
     ```
     docker compose up -d cache
@@ -84,7 +84,7 @@ To set up Repofinder locally, follow these steps:
 
 ### List repositories
 
-To list all GitHub repositories for a specified username, make a GET request with the username as the path variable and an `Accept: application/json` header.
+To list all GitHub repositories for a specified username, make a GET request with the username as the path variable and an `Accept: application/json` header:
 
 ```
 curl -H"Accept: application/json" http://localhost:8080/{username}
