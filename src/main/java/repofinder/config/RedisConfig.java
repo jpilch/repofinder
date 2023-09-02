@@ -34,7 +34,6 @@ public class RedisConfig {
 
     @Bean
     RedisCacheConfiguration cacheConfiguration() {
-        System.out.println(entryTtl);
         return RedisCacheConfiguration.defaultCacheConfig()
             .entryTtl(Duration.ofSeconds(entryTtl))
             .disableCachingNullValues();
