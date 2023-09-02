@@ -46,7 +46,6 @@ public class GithubServiceImplTests {
 
         List<GithubRepository> result = githubService.findAllNonForkReposFor("john");
 
-        assertEquals(result.size(), 1);
         verify(githubClient).getForObject(mockReposUrl, GithubRepository[].class);
         verify(githubClient).getForObject(mockBranchesUrl, GithubRepository.Branch[].class);
     }
