@@ -4,16 +4,3 @@ services:
     build: .
     ports:
       - "8080:8080"
-    links:
-      - "cache"
-    depends_on:
-      - "cache"
-    environment:
-      - JAVA_OPTS=-Dspring.profiles.active=container
-  cache:
-    container_name: "cache"
-    image: redis
-    expose:
-      - "6379"
-    ports:
-      - "6379:6379"
