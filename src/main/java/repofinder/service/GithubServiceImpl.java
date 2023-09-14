@@ -3,39 +3,44 @@ package repofinder.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import repofinder.model.GithubRepository;
+import repofinder.model.Repository;
+import repofinder.model.api.GithubBranch;
+import repofinder.model.api.GithubRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Service
 public class GithubServiceImpl implements GithubService {
     private final RestTemplate githubClient;
+    private final MapperService mapperService;
 
-    public GithubServiceImpl(RestTemplate githubClient) {
+    public GithubServiceImpl(RestTemplate githubClient, MapperService mapperService) {
         this.githubClient = githubClient;
+        this.mapperService = mapperService;
     }
 
     @Override
-    public List<GithubRepository> findAllNonForkReposFor(String username) {
+    public List<Repository> findAllNonForkReposFor(String username) {
         List<GithubRepository> allRepositories = findAllRepos(username);
-
-        Consumer<GithubRepository> fetchRepositoryBranches = repository -> {
-            List<GithubRepository.Branch> allBranches = findAllBranches(repository);
-            repository.setBranches(allBranches);
-        };
+        List<Repository> preparedRepositories = new ArrayList<>();
 
         List<GithubRepository> allNonForkRepositories = allRepositories
             .stream()
             .filter(GithubRepository::isNotAFork)
             .toList();
 
-        allNonForkRepositories.forEach(fetchRepositoryBranches);
+        Function<GithubRepository, Repository> toRepository = repository -> {
+            List<GithubBranch> allBranches = findAllBranches(repository);
+            return mapperService.map(repository, allBranches);
+        };
 
-        return allNonForkRepositories;
+        return allNonForkRepositories
+                .stream()
+                .map(toRepository)
+                .toList();
     }
 
     private <T> List<T> findAllEntities(Function<Integer, T[]> entityFetcher) {
@@ -62,11 +67,11 @@ public class GithubServiceImpl implements GithubService {
         );
     }
 
-    public List<GithubRepository.Branch> findAllBranches(GithubRepository repository) {
+    public List<GithubBranch> findAllBranches(GithubRepository repository) {
         return findAllEntities(
             (page) -> {
                 String url = getBranchesUrl(repository, page);
-                return githubClient.getForObject(url, GithubRepository.Branch[].class);
+                return githubClient.getForObject(url, GithubBranch[].class);
             }
         );
     }
@@ -93,7 +98,7 @@ public class GithubServiceImpl implements GithubService {
             .path("/branches")
             .queryParam("page", currentPage)
             .queryParam("per_page", 100)
-            .buildAndExpand(repository.getOwnerLogin(), repository.getName())
+            .buildAndExpand(repository.owner().login(), repository.name())
             .toUriString();
     }
 }
