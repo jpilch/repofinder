@@ -7,5 +7,5 @@ import repofinder.model.api.GithubRepository;
 import java.util.List;
 
 public interface MapperService {
-    public Repository map(GithubRepository githubRepository, List<GithubBranch> githubBranches);
+    Repository map(GithubRepository githubRepository, List<GithubBranch> githubBranches);
 }
