@@ -25,11 +25,11 @@ public class GithubServiceImplTests {
     public void setUp() {
         githubClient = mock(RestTemplate.class);
         mapperService = mock(MapperService.class);
-        this.githubService = new GithubServiceImpl(githubClient, mapperService);
+        githubService = new GithubServiceImpl(githubClient, mapperService);
     }
 
     @Test
-    public void shouldCallCorrectAPIEndpoints() throws Exception {
+    public void callsCorrectAPIEndpoints() throws Exception {
         GithubRepository mockRepo = new GithubRepository( "repofinder", new GithubRepository.Owner("john"), false);
         String mockReposUrl = "/users/john/repos?type=all&page=1&per_page=100";
         String mockBranchesUrl = "/repos/john/repofinder/branches?page=1&per_page=100";
@@ -46,7 +46,7 @@ public class GithubServiceImplTests {
     }
 
     @Test
-    public void shouldCallsBranchesEndpointForEveryNonForkRepo() throws Exception {
+    public void callsBranchesEndpointForEveryNonForkRepo() throws Exception {
         GithubRepository.Owner owner = new GithubRepository.Owner("john");
         GithubRepository mockRepo1 = new GithubRepository("repo1", owner, false);
         GithubRepository mockRepo2 = new GithubRepository("repo3", owner, true);
@@ -67,23 +67,21 @@ public class GithubServiceImplTests {
         verify(githubClient, times(0))
             .getForObject(mockBranchesUrl2, GithubBranch[].class);
     }
-//
-//    @Test
-//    public void findAllNonForkReposFor_FiltersForkRepos() throws Exception {
-//        GithubRepository mockRepo = new GithubRepository( "john", "repofinder", List.of(), true);
-//        String mockReposUrl = "/users/john/repos?type=all&page=1&per_page=100";
-//        String mockBranchesUrl = "/repos/john/repofinder/branches?page=1&per_page=100";
-//
-//        given(githubClient.getForObject(mockReposUrl, GithubRepository[].class))
-//            .willReturn(new GithubRepository[] {mockRepo});
-//        given(githubClient.getForObject(mockBranchesUrl, GithubRepository.Branch[].class))
-//            .willReturn(new GithubRepository.Branch[] {});
-//
-//        List<GithubRepository> result = githubService.findAllNonForkReposFor("john");
-//
-//        assertEquals(result.size(), 0);
-//    }
-//
+
+    @Test
+    public void filtersForkRepositories() throws Exception {
+        GithubRepository.Owner owner = new GithubRepository.Owner("john");
+        GithubRepository mockRepo = new GithubRepository( "repofinder", owner, true);
+        String mockReposUrl = "/users/john/repos?type=all&page=1&per_page=100";
+
+        given(githubClient.getForObject(mockReposUrl, GithubRepository[].class))
+            .willReturn(new GithubRepository[] {mockRepo});
+
+        List<Repository> result = githubService.findAllNonForkReposFor("john");
+
+        assertEquals(result.size(), 0);
+    }
+
 //    @Test
 //    public void findAllNonForkReposFor_SetsBranchesForEachRepo() throws Exception {
 //        GithubRepository mockRepo1 = new GithubRepository("john", "repo1", List.of(), false);
