@@ -89,34 +89,38 @@ public class GithubServiceImplTests {
                 new GithubRepository.Owner("john"),
                 false
         );
-        GithubBranch mockBranch1 = new GithubBranch("master", new GithubBranch.Commit("ad0e68f2"));
+        GithubBranch mockBranch = new GithubBranch("master", new GithubBranch.Commit("ad0e68f2"));
+        Repository.Branch mappedBranch = new Repository.Branch("master", "ad0e68f2");
 
         given(githubClient.getForObject("/users/john/repos?type=all&page=1&per_page=100", GithubRepository[].class))
                 .willReturn(new GithubRepository[] {mockRepo1});
         given(githubClient.getForObject("/repos/john/repo1/branches?page=1&per_page=100", GithubBranch[].class))
-                .willReturn(new GithubBranch[] {mockBranch1});
+                .willReturn(new GithubBranch[] {mockBranch});
+        given(mapperService.mapBranch(mockBranch)).willReturn(mappedBranch);
 
         githubService.findAllNonForkReposFor("john");
 
-        verify(mapperService).map(mockRepo1, List.of(mockBranch1));
+        verify(mapperService).mapBranch(mockBranch);
+        verify(mapperService).mapRepository(mockRepo1, List.of(mappedBranch));
     }
 
     @Test
     public void returnsResultsMappedByMapperService() throws Exception {
-        GithubRepository mockRepo1 = new GithubRepository(
+        GithubRepository mockRepo = new GithubRepository(
                 "repo1",
                 new GithubRepository.Owner("john"),
                 false
         );
-        GithubBranch mockBranch1 = new GithubBranch("master", new GithubBranch.Commit("ad0e68f2"));
+        GithubBranch mockBranch = new GithubBranch("master", new GithubBranch.Commit("ad0e68f2"));
         Repository.Branch mappedBranch = new Repository.Branch("master", "ad0e68f2");
         Repository mappedRepository = new Repository("john", "repofinder", List.of(mappedBranch));
 
         given(githubClient.getForObject("/users/john/repos?type=all&page=1&per_page=100", GithubRepository[].class))
-                .willReturn(new GithubRepository[] {mockRepo1});
+                .willReturn(new GithubRepository[] {mockRepo});
         given(githubClient.getForObject("/repos/john/repo1/branches?page=1&per_page=100", GithubBranch[].class))
-                .willReturn(new GithubBranch[] {mockBranch1});
-        given(mapperService.map(mockRepo1, List.of(mockBranch1)))
+                .willReturn(new GithubBranch[] {mockBranch});
+        given(mapperService.mapBranch(mockBranch)).willReturn(mappedBranch);
+        given(mapperService.mapRepository(mockRepo, List.of(mappedBranch)))
                 .willReturn(mappedRepository);
 
         List<Repository> result = githubService.findAllNonForkReposFor("john");

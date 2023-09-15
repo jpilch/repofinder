@@ -25,16 +25,20 @@ public class GithubServiceImpl implements GithubService {
     @Override
     public List<Repository> findAllNonForkReposFor(String username) {
         List<GithubRepository> allRepositories = findAllRepos(username);
-        List<Repository> preparedRepositories = new ArrayList<>();
 
         List<GithubRepository> allNonForkRepositories = allRepositories
             .stream()
             .filter(GithubRepository::isNotAFork)
             .toList();
 
-        Function<GithubRepository, Repository> toRepository = repository -> {
-            List<GithubBranch> allBranches = findAllBranches(repository);
-            return mapperService.map(repository, allBranches);
+        Function<GithubRepository, Repository> toRepository = githubRepository -> {
+            List<GithubBranch> githubBranches = findAllBranches(githubRepository);
+            List<Repository.Branch> mappedBranches = githubBranches
+                    .stream()
+                    .map(mapperService::mapBranch)
+                    .toList();
+
+            return mapperService.mapRepository(githubRepository, mappedBranches);
         };
 
         return allNonForkRepositories

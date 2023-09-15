@@ -11,21 +11,12 @@ import java.util.List;
 public class MapperServiceImpl implements MapperService {
 
     @Override
-    public Repository map(GithubRepository githubRepository, List<GithubBranch> githubBranches) {
-        String ownerLogin = githubRepository.owner().login();
-        String repositoryName = githubRepository.name();
-        List<Repository.Branch> mappedBranches = githubBranches
-                .stream()
-                .map(this::mapBranch)
-                .toList();
-
-        return new Repository(ownerLogin, repositoryName, mappedBranches);
+    public Repository mapRepository(GithubRepository githubRepository, List<Repository.Branch> branches) {
+        return new Repository(githubRepository.owner().login(), githubRepository.name(), branches);
     }
 
-    private Repository.Branch mapBranch(GithubBranch githubBranch) {
-        String branchName = githubBranch.name();
-        String lastCommitSha = githubBranch.commit().sha();
-
-        return new Repository.Branch(branchName, lastCommitSha);
+    @Override
+    public Repository.Branch mapBranch(GithubBranch githubBranch) {
+        return new Repository.Branch(githubBranch.name(), githubBranch.commit().sha());
     }
 }
