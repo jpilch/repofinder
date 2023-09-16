@@ -139,5 +139,11 @@ Sample response:
 - **Spring Boot**: Framework for implementing the required API functionality
 - **Docker**: Containerization for easy development and reproducible environment
 
+## Todo
+
+- write new `GithubService` implementation using non-blocking approach
+- use `WebClient` instead of `RestTemplate`
+- add redis for caching along with test containers
+
 
 
