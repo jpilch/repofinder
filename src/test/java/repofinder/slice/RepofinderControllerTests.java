@@ -29,7 +29,7 @@ public class RepofinderControllerTests {
     GithubService githubService;
 
     @Test
-    public void findAllNonForkReposFor_NonExistentUser() throws Exception {
+    public void returnsErrorResponseForNonExistentUser() throws Exception {
         String mockErrorResponseBody = "{\"message\": \"Not found\"}";
         String mockExceptionMessage = "User not found";
         HttpStatusCode mockExceptionStatus = HttpStatusCode.valueOf(404);
@@ -54,7 +54,7 @@ public class RepofinderControllerTests {
     }
 
     @Test
-    public void findAllNonForkReposFor_UnsupportedContentType() throws Exception {
+    public void returnsErrorResponseForUnsupportedContentType() throws Exception {
         given(githubService.findAllNonForkReposFor(any(String.class)))
             .willReturn(List.of());
 
@@ -70,7 +70,7 @@ public class RepofinderControllerTests {
     }
 
     @Test
-    public void findAllNonForkReposFor_ValidUser() throws Exception {
+    public void returnsNonForReposForValidUsername() throws Exception {
         Repository.Branch mockBranch = new Repository.Branch("master", "00f99f711380bd6c");
         Repository mockRepository = new Repository(
             "john",
