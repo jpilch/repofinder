@@ -53,14 +53,8 @@ To set up Repofinder locally, follow these steps:
           apiVersion: 2022-11-28
           authToken: <YOUR-TOKEN>
           rootUri: https://api.github.com
-  
-    app:
-      config:
-        entry-ttl: 600
    ```
    Where `<YOUR-TOKEN>` is your personal access token for the GitHub's API.
-
-   You can also adjust the `app.config.entry-ttl` to change cache entry ttl, in the above example it's equal to 10 minutes (60 -> 1 minute).
 
 ### Building and Running
 
@@ -78,13 +72,13 @@ To set up Repofinder locally, follow these steps:
 
 3. Run the application.
 
-    The easiest way to get this API up and running is by using docker compose:
+    By using docker compose:
     
     ```
     docker compose up -d
     ```
     
-    Or alternatively you can use maven spring boot plugin:
+    Or by using maven spring boot plugin:
     
     ```
     ./mvnw spring-boot:run
@@ -105,7 +99,6 @@ curl -H"Accept: application/json" http://localhost:8080/{username}
 Sample response:
 
 ```
-
 [
     {
         "name": "repofinder",
@@ -127,7 +120,7 @@ Sample response:
 ```
 {
     "status": 404,
-    "message": "User not found"
+    "message": "Not Found"
 }
 ```
 
@@ -135,7 +128,7 @@ Sample response:
 ```
 {
     "status": 406,
-    "message": "Not Acceptable"
+    "message": "No acceptable representation"
 }
 ```
 
@@ -144,7 +137,6 @@ Sample response:
 - **Java**: The programming language
 - **Maven**: Dependency management tool
 - **Spring Boot**: Framework for implementing the required API functionality
-- **Redis**: In memory caching for improved performance and reducing the amount of requests to GitHub
 - **Docker**: Containerization for easy development and reproducible environment
 
 
