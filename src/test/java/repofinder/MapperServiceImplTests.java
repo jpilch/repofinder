@@ -4,6 +4,7 @@ package repofinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import repofinder.model.Repository;
+import repofinder.model.api.GithubBranch;
 import repofinder.model.api.GithubRepository;
 import repofinder.service.MapperService;
 import repofinder.service.MapperServiceImpl;
@@ -19,6 +20,16 @@ public class MapperServiceImplTests {
     @BeforeEach
     public void setUp() {
         mapperService = new MapperServiceImpl();
+    }
+
+    @Test
+    public void mapsGithubBranch() throws Exception {
+        GithubBranch mockBranch = new GithubBranch("master", new GithubBranch.Commit("ef9a01f1"));
+
+        Repository.Branch result = mapperService.mapBranch(mockBranch);
+
+        assertEquals(result.name(), mockBranch.name());
+        assertEquals(result.lastCommitSha(), mockBranch.commit().sha());
     }
 
     @Test
