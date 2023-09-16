@@ -19,7 +19,7 @@ public class RepofinderApplication {
 	}
 
 	@Bean
-	@Profile("!unit")
+	@Profile("!slice")
 	public RestTemplate githubClient(
 		RestTemplateBuilder restTemplateBuilder,
 		GithubClientConfigProps props

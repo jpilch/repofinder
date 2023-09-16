@@ -19,7 +19,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ActiveProfiles({"test", "unit"})
+@ActiveProfiles({"test", "slice"})
 @WebMvcTest(RepofinderController.class)
 public class RepofinderControllerTests {
     @Autowired
