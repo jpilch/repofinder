@@ -1,4 +1,4 @@
-package repofinder;
+package repofinder.unit;
 
 
 import org.junit.jupiter.api.BeforeEach;
