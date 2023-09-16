@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 import repofinder.config.GithubClientConfigProps;
 
-@EnableCaching
 @SpringBootApplication
 @ConfigurationPropertiesScan
 public class RepofinderApplication {
@@ -20,7 +19,7 @@ public class RepofinderApplication {
 	}
 
 	@Bean
-	@Profile("!test")
+	@Profile("!unit")
 	public RestTemplate githubClient(
 		RestTemplateBuilder restTemplateBuilder,
 		GithubClientConfigProps props
