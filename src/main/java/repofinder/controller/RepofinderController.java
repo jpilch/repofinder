@@ -3,6 +3,7 @@ package repofinder.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import repofinder.model.Repository;
 import repofinder.service.GithubService;
 
@@ -18,7 +19,7 @@ public class RepofinderController {
     }
 
     @GetMapping(value = "/{username}", produces = "application/json")
-    public List<Repository> findAllNonForkReposFor(@PathVariable String username) {
+    public Flux<Repository> findAllNonForkReposFor(@PathVariable String username) {
         logger.info("Finding non fork repositories for {}", username);
         return githubService.findAllNonForkReposFor(username);
     }
