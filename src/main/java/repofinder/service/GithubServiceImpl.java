@@ -14,37 +14,15 @@ import java.util.function.Function;
 
 @Service
 public class GithubServiceImpl implements GithubService {
-    private final RestTemplate githubClient;
     private final MapperService mapperService;
 
-    public GithubServiceImpl(RestTemplate githubClient, MapperService mapperService) {
-        this.githubClient = githubClient;
+    public GithubServiceImpl(MapperService mapperService) {
         this.mapperService = mapperService;
     }
 
     @Override
     public List<Repository> findAllNonForkReposFor(String username) {
-        List<GithubRepository> allRepositories = findAllRepos(username);
-
-        List<GithubRepository> allNonForkRepositories = allRepositories
-            .stream()
-            .filter(GithubRepository::isNotAFork)
-            .toList();
-
-        Function<GithubRepository, Repository> toRepository = githubRepository -> {
-            List<GithubBranch> githubBranches = findAllBranches(githubRepository);
-            List<Repository.Branch> mappedBranches = githubBranches
-                    .stream()
-                    .map(mapperService::mapBranch)
-                    .toList();
-
-            return mapperService.mapRepository(githubRepository, mappedBranches);
-        };
-
-        return allNonForkRepositories
-                .stream()
-                .map(toRepository)
-                .toList();
+        return List.of();
     }
 
     private <T> List<T> findAllEntities(Function<Integer, T[]> entityFetcher) {
@@ -63,21 +41,11 @@ public class GithubServiceImpl implements GithubService {
     }
 
     public List<GithubRepository> findAllRepos(String username) {
-        return findAllEntities(
-            (page) -> {
-                String url = getRepositoriesUrl(username, page);
-                return githubClient.getForObject(url, GithubRepository[].class);
-            }
-        );
+        return List.of();
     }
 
     public List<GithubBranch> findAllBranches(GithubRepository repository) {
-        return findAllEntities(
-            (page) -> {
-                String url = getBranchesUrl(repository, page);
-                return githubClient.getForObject(url, GithubBranch[].class);
-            }
-        );
+        return List.of();
     }
 
     private String getRepositoriesUrl(String username, int currentPage) {
